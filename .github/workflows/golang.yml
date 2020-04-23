@@ -11,7 +11,7 @@ on:
     #   - 'go.sum'
 
 env:
-  GO_VERSION: 1.14.0
+  GO_VERSION: 1.14.x
 
 jobs:
 
@@ -22,7 +22,7 @@ jobs:
       - name: Setup Go $GO_VERSION
         uses: actions/setup-go@v1
         with:
-          go-version: 1.14.x
+          go-version: $GO_VERSION
 
       - name: Checkout code into the Go module directory
         uses: actions/checkout@v1
@@ -46,7 +46,7 @@ jobs:
       - name: Setup Go $GO_VERSION
         uses: actions/setup-go@v1
         with:
-          go-version: 1.14.x
+          go-version: $GO_VERSION
 
       - name: Checkout code into the Go module directory
         uses: actions/checkout@v1
