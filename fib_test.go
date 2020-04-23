@@ -8,6 +8,8 @@ import (
 	fib "github.com/yyotti/github-actions-test"
 )
 
+// TODO CIをコケさせるためにわざとTODOコメントを入れてみる
+
 func test(fn fib.Func, t *testing.T) {
 	var tests = []struct {
 		name     string
