@@ -7,7 +7,7 @@ import (
 	"math"
 )
 
-type FibFunc func(uint) uint64
+type Func func(uint) uint64
 
 // MaxN is limit value of index n.
 // fib(94) =  1293530146158671551
@@ -83,8 +83,7 @@ func mapMemoRecursive(n uint, memo map[uint]uint64) uint64 {
 func MapMemoRecursive(n uint) uint64 {
 	checkN(n)
 
-	memo := make(map[uint]uint64, n)
-	return mapMemoRecursive(n, memo)
+	return mapMemoRecursive(n, make(map[uint]uint64, n))
 }
 
 func arrayMemoRecursive(n uint, memo []*uint64) uint64 {
@@ -93,6 +92,7 @@ func arrayMemoRecursive(n uint, memo []*uint64) uint64 {
 	}
 
 	var fib uint64
+
 	switch n {
 	case 0:
 		fib = 0
@@ -112,6 +112,5 @@ func arrayMemoRecursive(n uint, memo []*uint64) uint64 {
 func ArrayMemoRecursive(n uint) uint64 {
 	checkN(n)
 
-	memo := make([]*uint64, n+1)
-	return arrayMemoRecursive(n, memo)
+	return arrayMemoRecursive(n, make([]*uint64, n+1))
 }

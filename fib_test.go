@@ -1,22 +1,14 @@
-package fib
+package fib_test
 
 import (
 	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	fib "github.com/yyotti/github-actions-test"
 )
 
-func TestCheckN(t *testing.T) {
-	a := assert.New(t)
-	for n := uint(0); n <= MaxN; n++ {
-		a.NotPanics(func() { checkN(n) }, "n={}", n)
-	}
-
-	a.Panics(func() { checkN(MaxN + 1) }, "n={}", MaxN+1)
-}
-
-func test(fn FibFunc, t *testing.T) {
+func test(fn fib.Func, t *testing.T) {
 	var tests = []struct {
 		name     string
 		expected uint64
@@ -36,12 +28,13 @@ func test(fn FibFunc, t *testing.T) {
 	}
 
 	a := assert.New(t)
+
 	for _, tt := range tests {
 		a.Equal(tt.expected, fn(tt.given), "n=%d", tt.given)
 	}
 }
 
-func bench(fn FibFunc, args []uint, b *testing.B) {
+func bench(fn fib.Func, args []uint, b *testing.B) {
 	for _, arg := range args {
 		arg := arg
 		b.Run(fmt.Sprintf("%d", arg), func(b *testing.B) {
@@ -54,55 +47,33 @@ func bench(fn FibFunc, args []uint, b *testing.B) {
 }
 
 func TestRecursive(t *testing.T) {
-	test(Recursive, t)
+	test(fib.Recursive, t)
 }
 
 func BenchmarkRecursive(b *testing.B) {
-	bench(Recursive, []uint{10, 20, 30, 40}, b)
+	bench(fib.Recursive, []uint{10, 20, 30, 40}, b)
 }
 
 func TestLoop(t *testing.T) {
-	test(Loop, t)
+	test(fib.Loop, t)
 }
 
 func BenchmarkLoop(b *testing.B) {
-	bench(Loop, []uint{10, 20, 30, 40, 50, 60, MaxN}, b)
+	bench(fib.Loop, []uint{10, 20, 30, 40, 50, 60, fib.MaxN}, b)
 }
 
 func TestGeneralTerm(t *testing.T) {
-	test(GeneralTerm, t)
+	test(fib.GeneralTerm, t)
 }
 
 func BenchmarkGeneralTerm(b *testing.B) {
-	bench(GeneralTerm, []uint{10, 20, 30, 40, 50, 60, MaxN - 21}, b)
-}
-
-func TestMapMemoRecursive_inner(t *testing.T) {
-	test(func(n uint) uint64 {
-		memo := map[uint]uint64{}
-		return mapMemoRecursive(n, memo)
-	}, t)
+	bench(fib.GeneralTerm, []uint{10, 20, 30, 40, 50, 60, fib.MaxN - 21}, b)
 }
 
 func TestMapMemoRecursive(t *testing.T) {
-	test(MapMemoRecursive, t)
+	test(fib.MapMemoRecursive, t)
 }
 
 func BenchmarkMapMemoRecursive(b *testing.B) {
-	bench(MapMemoRecursive, []uint{10, 20, 30, 40, 50, 60, MaxN}, b)
-}
-
-func TestArrayMemoRecursive_inner(t *testing.T) {
-	test(func(n uint) uint64 {
-		memo := make([]*uint64, n+1)
-		return arrayMemoRecursive(n, memo)
-	}, t)
-}
-
-func TestArrayMemoRecursive(t *testing.T) {
-	test(ArrayMemoRecursive, t)
-}
-
-func BenchmarkArrayMemoRecursive(b *testing.B) {
-	bench(ArrayMemoRecursive, []uint{10, 20, 30, 40, 50, 60, MaxN}, b)
+	bench(fib.MapMemoRecursive, []uint{10, 20, 30, 40, 50, 60, fib.MaxN}, b)
 }
